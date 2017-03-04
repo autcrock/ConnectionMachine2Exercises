@@ -1,0 +1,23 @@
+main()
+{
+    shape [512] [512] matrix;
+    int:matrix mat1;
+    int max, min;
+    int total, i;
+    with (matrix) {
+    	mat1 = pcoord(0)+pcoord(1);
+    	min = <?= mat1;
+    	max = >?= mat1;
+        total += mat1;
+    	printf("Total = %d, maximum = %d, minimum = %d\n", total, max, min);
+    	where (mat1 == min)
+    	    printf("The coordinates of the min value are %d %d\n",
+                    += pcoord(0), += pcoord(1));
+    	where (mat1 == max)
+    	    printf("The coordinates of the max value are %d %d\n",
+                    += pcoord(0), += pcoord(1));
+        for (i = min; i <= max; i++)
+            where (mat1 == i)
+                printf("%d    %d\n", i, (+= (mat1+1)) / (i+1));
+    }
+}

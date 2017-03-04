@@ -1,0 +1,34 @@
+#include <frandom.h>
+#include <math.h>
+#include <stdio.h>
+
+#define SIZE 8192
+#define G 1
+
+main()
+{
+    struct l {
+        double x, y, m, fx, fy;
+    };
+    shape [SIZE] particles;
+    struct l:particles rvs;
+    int i;
+
+    with (particles) {
+    	rvs.x = frandom();
+    	rvs.y = frandom();
+    	rvs.m = frandom();
+    	rvs.fx = rvs.fy = 0;
+        for (i = 0; i < SIZE; i++) {
+            [i] rvs.fx += (G * [i] rvs.m * rvs.m * ([i] rvs.x - rvs.x)) /
+                 pow(sqrt(([i] rvs.x - rvs.x) * ([i] rvs.x - rvs.x) +
+                      ([i] rvs.y - rvs.y) * ([i] rvs.y - rvs.y)), 3);
+            [i] rvs.fy += (G * [i] rvs.m * rvs.m * ([i] rvs.y - rvs.y)) /
+                 pow(sqrt(([i] rvs.x - rvs.x) * ([i] rvs.x - rvs.x) +
+                      ([i] rvs.y - rvs.y) * ([i] rvs.y - rvs.y)), 3);
+           printf (" %g  %g\n", [i] rvs.fx, [i] rvs.fy);
+        }
+    }
+}
+               
+

@@ -1,0 +1,27 @@
+#include <frandom.h>
+#include <math.h>
+#include <stdio.h>
+
+#define SIZE 65536 
+
+main()
+{
+    struct l {
+        double x, y, r, f;
+    };
+    shape [SIZE] values;
+    struct l:values rvs;
+
+    with (values) {
+    	rvs.x = frandom();
+    	rvs.y = frandom();
+    	rvs.r = sqrt(rvs.x * rvs.x + rvs.y * rvs.y);
+        where (rvs.r <= 1)
+            	rvs.f = 1;
+        else
+                rvs.f=0;
+        printf("%g is the value of pi\n", (((+=rvs.f)/SIZE) * 4));
+    }
+}
+               
+

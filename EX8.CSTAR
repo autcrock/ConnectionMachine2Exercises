@@ -1,0 +1,85 @@
+#include <math.h>
+#include <stdio.h>
+
+/* nrlcs library functions */
+#include <printf.h>
+#include <fb.h>
+#include <plot.h>
+
+/*size of processor set*/
+#define SIZE 8192
+
+/* Size of screen */
+#define SCR 512
+
+/* Size of Vertical offset */
+#define HSCR 256.0
+
+/* Number of time steps */
+#define MAX 100000
+
+/* Time steps between plots */
+#define INTERVAL 5
+
+/* Vertical scale magnification*/
+#define SCALE 100.0
+#define SCALE1 10.0
+
+/*relative processor addressing */
+#define AT [.]
+#define P  [.-1]
+#define N  [.+1]
+
+/* Constants in the equation */
+#define C1  0.2
+#define C2  1.6
+#define C3  0.2
+#define C4 -1.0
+
+main()
+{
+    shape [SIZE] material;
+    struct tvalues {
+    	double tp,     /* previous time slice */
+    	t,             /* present time */
+    	tf;            /* future time */
+    };
+
+    struct tvalues:material w;
+
+    int i; /* loop index */
+
+    with (material) {
+
+        /* Initialise w with a sine wave in the first 512 locations, 0 elsewhere  */
+    	where (pcoord (0) < 512)
+    		w.t = w.tf = w.tp = sin(pcoord(0)  * 3.14159182 / 128.0);
+        else w.tp = w.t = w.tf = 0;
+
+
+	/* open graphics window */
+
+        openpl();
+
+
+	/* Run through the difference equation */
+
+	for (i = 0; i < MAX; i++) {
+	        AT w.tf = C1 * P w.t + C2 * AT w.t + C3 * N w.t + C4 * AT w.tp;
+	        if ((i % INTERVAL) == 0) {
+                        erase();
+	        	point((float:current) (pcoord(0) / SCALE1 + 10.0),
+                              (float:current) (w.tf * SCALE + HSCR));
+                }
+		w.tp = w.t;
+                w.t = w.tf;
+	}
+
+
+	/* close window */
+
+	closepl();
+
+
+    }
+}
